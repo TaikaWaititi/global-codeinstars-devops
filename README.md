@@ -4,11 +4,11 @@ Backend Java/Spring Boot para gerenciamento e monitoramento de habitats espaciai
 
 ## Equipe
 
-- ArthurCPV - RM566515
-- JuliaTButtler - RM564975
-- Marixavq - RM566357
-- TaikaWaititi - RM564939
-- ZeDio - RM562341
+- Arth.pv (ArthurCPV) - RM566515
+- JuliaB (JuliaTButtler) - RM564975
+- Mari (Marixavq) - RM566357
+- Bruno Martins Bettio (TaikaWaititi) - RM564939
+- Jose Diogo Da Silva Neves (ZeDio) - RM562341
 
 > Nesta entrega DevOps, o RM usado nos nomes dos containers e recursos Docker e `RM566515`. Caso outro integrante seja o representante oficial, altere `rm566515` no `docker-compose.yml` antes da gravacao.
 
@@ -69,8 +69,8 @@ Depois do script, saia e entre novamente via SSH para atualizar o grupo do usuar
 3. Clone o repositorio:
 
 ```bash
-git clone https://github.com/Marixavq/gs-sistema-helios.git
-cd gs-sistema-helios
+git clone https://github.com/TaikaWaititi/global-codeinstars-devops.git
+cd global-codeinstars-devops
 ```
 
 4. Configure variaveis de ambiente:
