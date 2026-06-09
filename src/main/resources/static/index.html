@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sistema Hélios</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Painel operacional</p>
+        <h1>Sistema Hélios</h1>
+      </div>
+      <nav class="actions" aria-label="Ações principais">
+        <a class="button secondary" href="/swagger-ui.html">Swagger</a>
+        <a class="button secondary" href="/api-docs">API Docs</a>
+        <button class="button" id="seedButton" type="button">Gerar dados</button>
+      </nav>
+    </header>
+
+    <main>
+      <section class="status-band" aria-label="Status do sistema">
+        <article>
+          <span>API</span>
+          <strong id="apiStatus">Verificando...</strong>
+        </article>
+        <article>
+          <span>Habitats</span>
+          <strong id="habitatCount">0</strong>
+        </article>
+        <article>
+          <span>Módulos</span>
+          <strong id="moduleCount">0</strong>
+        </article>
+        <article>
+          <span>Sensores</span>
+          <strong id="sensorCount">0</strong>
+        </article>
+      </section>
+
+      <section class="layout">
+        <div class="panel">
+          <div class="panel-title">
+            <h2>Habitats</h2>
+            <button class="icon-button" data-refresh="habitats" type="button" title="Atualizar habitats">↻</button>
+          </div>
+          <div class="list" id="habitatList"></div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-title">
+            <h2>Módulos Habitacionais</h2>
+            <button class="icon-button" data-refresh="modulos" type="button" title="Atualizar módulos">↻</button>
+          </div>
+          <div class="list" id="moduleList"></div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-title">
+            <h2>Sensores</h2>
+            <button class="icon-button" data-refresh="sensores" type="button" title="Atualizar sensores">↻</button>
+          </div>
+          <div class="list" id="sensorList"></div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-title">
+            <h2>Ocupantes</h2>
+            <button class="icon-button" data-refresh="ocupantes" type="button" title="Atualizar ocupantes">↻</button>
+          </div>
+          <div class="list" id="occupantList"></div>
+        </div>
+      </section>
+    </main>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="/app.js"></script>
+  </body>
+</html>
