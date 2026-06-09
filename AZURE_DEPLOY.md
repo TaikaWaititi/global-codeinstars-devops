@@ -1,22 +1,22 @@
 # Deploy em VM Azure
 
-Este guia complementa o README para a demonstracao da disciplina em uma VM Linux no Azure.
+Este guia complementa o README para a demonstração da disciplina em uma VM Linux no Azure.
 
-## Configuracao Recomendada da VM
+## Configuração Recomendada da VM
 
 - Sistema operacional: Ubuntu Server LTS.
 - Tamanho: VM com pelo menos 2 vCPU e 2 GB de RAM para build Maven dentro do Docker.
-- Disco: SSD padrao com espaco suficiente para imagens Docker.
+- Disco: SSD padrão com espaço suficiente para imagens Docker.
 - Portas liberadas no NSG:
   - `22/tcp` para SSH.
   - `8080/tcp` para API/Swagger.
   - `5432/tcp` para evidenciar acesso externo ao banco, se exigido pelo professor.
 
-Por seguranca, a porta `5432` deve ficar restrita ao IP de quem vai avaliar/gravar sempre que possivel. Para a rubrica, o container do banco tambem fica com a porta publicada no `docker-compose.yml`.
+Por segurança, a porta `5432` deve ficar restrita ao IP de quem vai avaliar ou gravar sempre que possível. Para a rubrica, o container do banco também fica com a porta publicada no `docker-compose.yml`.
 
 ## Preparar a VM
 
-Conecte por SSH:
+Conecte-se por SSH:
 
 ```bash
 ssh azureuser@IP_PUBLICO_DA_VM
@@ -29,14 +29,14 @@ chmod +x scripts/azure-vm-setup.sh
 ./scripts/azure-vm-setup.sh
 ```
 
-Saia e entre novamente na sessao SSH:
+Saia da sessão SSH e entre novamente:
 
 ```bash
 exit
 ssh azureuser@IP_PUBLICO_DA_VM
 ```
 
-Valide a instalacao:
+Valide a instalação:
 
 ```bash
 docker --version
@@ -45,11 +45,11 @@ docker compose version
 
 ## Subir o Sistema
 
-Clone o repositorio e entre na pasta:
+Clone o repositório e entre na pasta:
 
 ```bash
-git clone https://github.com/Marixavq/gs-sistema-helios.git
-cd gs-sistema-helios
+git clone https://github.com/TaikaWaititi/global-codeinstars-devops.git
+cd global-codeinstars-devops
 ```
 
 Crie o arquivo `.env` a partir do exemplo:
@@ -61,7 +61,7 @@ nano .env
 
 Na VM Azure, mantenha `APP_HOST_PORT=8080` para acessar a API por `http://IP_PUBLICO_DA_VM:8080`. Use outra porta apenas se houver conflito local durante testes.
 
-Suba app e banco em segundo plano com o script preparado:
+Suba aplicação e banco em segundo plano com o script preparado:
 
 ```bash
 chmod +x scripts/*.sh
@@ -75,7 +75,7 @@ docker compose up -d --build
 docker compose ps
 ```
 
-Defina o IP publico para facilitar os testes:
+Defina o IP público para facilitar os testes:
 
 ```bash
 export PUBLIC_IP=IP_PUBLICO_DA_VM
@@ -87,47 +87,45 @@ Acesse:
 http://IP_PUBLICO_DA_VM:8080/swagger-ui.html
 ```
 
-## Evidencias para Gravar
+## Evidências para Gravar
 
-Mostre que os containers estao em execucao:
+Mostre que os containers estão em execução:
 
 ```bash
 docker compose ps
 ```
 
-Mostre logs dos dois containers:
+Mostre os logs dos dois containers:
 
 ```bash
 docker logs sistema-helios-app-rm566515
 docker logs postgres-helios-rm566515
 ```
 
-Mostre diretorio e usuario do app:
+Mostre o diretório e o usuário do container da aplicação:
 
 ```bash
 docker container exec -it sistema-helios-app-rm566515 sh -lc "pwd && ls -la && whoami"
 ```
 
-Mostre diretorio e usuario do banco:
+Mostre o diretório e o usuário do container do banco:
 
 ```bash
 docker container exec -it postgres-helios-rm566515 sh -lc "pwd && ls -la && whoami"
 ```
 
-Execute os testes de CRUD usando o IP publico:
-
-Opcao recomendada:
+Execute os testes de CRUD usando o IP público:
 
 ```bash
 BASE_URL="http://${PUBLIC_IP}:8080" ./scripts/azure-smoke-test.sh
 ```
 
-Ou execute manualmente:
+Também é possível executar manualmente:
 
 ```bash
 curl -X POST "http://${PUBLIC_IP}:8080/api/habitats" \
   -H "Content-Type: application/json" \
-  -d '{"nome":"Tundralandia Alpha","localizacao":"Marte","tipoHabitat":"Residencial","capacidadeTotal":50,"statusOperacional":"Ativo"}'
+  -d '{"nome":"Habitat Ares Alpha","localizacao":"Marte","tipoHabitat":"Residencial","capacidadeTotal":50,"statusOperacional":"Ativo"}'
 
 curl -X POST "http://${PUBLIC_IP}:8080/api/ocupantes" \
   -H "Content-Type: application/json" \
@@ -146,15 +144,13 @@ curl -X POST "http://${PUBLIC_IP}:8080/api/reservas" \
   -d '{"idOcupante":1,"idModulo":1,"dataInicio":"2026-05-31","dataFim":"2026-06-07","statusReserva":"Ativa"}'
 ```
 
-Comprove direto no banco:
-
-Opcao recomendada:
+Comprove a persistência diretamente no banco:
 
 ```bash
 ./scripts/azure-evidence.sh
 ```
 
-Ou execute manualmente:
+Também é possível executar as consultas manualmente:
 
 ```bash
 docker container exec -it postgres-helios-rm566515 psql -U helios_user -d helios_db -c "select id, nome, localizacao, status_operacional from habitats;"
@@ -166,13 +162,13 @@ docker container exec -it postgres-helios-rm566515 psql -U helios_user -d helios
 
 ## Portas no Azure
 
-Se a API nao abrir pelo navegador, confira:
+Se a API não abrir pelo navegador, confira:
 
-- A porta `8080` esta liberada no NSG da VM.
-- A VM esta usando o IP publico correto.
-- O container esta de pe com `docker compose ps`.
-- O log da aplicacao nao mostra erro de conexao com o banco.
+- A porta `8080` está liberada no NSG da VM.
+- A VM está usando o IP público correto.
+- O container está em execução com `docker compose ps`.
+- O log da aplicação não mostra erro de conexão com o banco.
 
-Para o banco, a aplicacao usa a rede Docker interna. A porta `5432` publicada serve para cumprir a exigencia de porta exposta e para demonstracoes controladas.
+Para o banco, a aplicação usa a rede Docker interna. A porta `5432` publicada serve para cumprir a exigência de porta exposta e para demonstrações controladas.
 
-Se forem configurar portas pelo Azure CLI, use o guia [azure-nsg-commands.md](azure-nsg-commands.md).
+Se a equipe configurar portas pelo Azure CLI, use o guia [azure-nsg-commands.md](azure-nsg-commands.md).
