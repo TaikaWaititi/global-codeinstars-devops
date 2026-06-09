@@ -1,6 +1,6 @@
 # Sistema Helios
 
-Backend Java/Spring Boot para gerenciamento e monitoramento de habitats espaciais autonomos. O sistema registra habitats, modulos, ocupantes, sensores, leituras, alertas, acoes automaticas, logs e reservas operacionais.
+Backend Java/Spring Boot para gerenciamento e monitoramento de habitats espaciais autonomos. O sistema registra habitats, módulos, ocupantes, sensores, leituras, alertas, ações automáticas, logs e reservas operacionais.
 
 ## Equipe
 
@@ -39,9 +39,9 @@ flowchart LR
 ## Requisitos DevOps Atendidos
 
 - Aplicacao Java conteinerizada com imagem personalizada via `Dockerfile`.
-- Imagem da aplicacao otimizada com runtime Java reduzida via `jlink`, ficando abaixo de 400 MB.
-- Container da aplicacao executando com usuario nao privilegiado `helios`.
-- Diretorio de trabalho definido em `/opt/sistema-helios`.
+- Imagem da aplicação otimizada com runtime Java reduzida via `jlink`, ficando abaixo de 400 MB.
+- Container da aplicação executando com usuário nao privilegiado `helios`.
+- Diretório de trabalho definido em `/opt/sistema-helios`.
 - Variaveis de ambiente configuradas para app e banco.
 - Portas expostas: app `8080`, banco `5432`.
 - Containers com nome contendo RM: `sistema-helios-app-rm566515` e `postgres-helios-rm566515`.
@@ -232,13 +232,3 @@ No Windows:
 ```powershell
 .\mvnw.cmd test
 ```
-
-## Entrega
-
-A entrega da disciplina deve conter um PDF com:
-
-- Pagina de rosto com nome da equipe, RM e nome completo dos integrantes.
-- Link publico do GitHub com este projeto.
-- Link do video demonstrativo no YouTube.
-
-O video deve demonstrar a execucao em nuvem, iniciando pelo clone do repositorio, subindo os containers em background, exibindo logs, acessando os containers com `exec`, executando os CRUDs e comprovando a persistencia com `SELECT` conectado diretamente no container do banco.
