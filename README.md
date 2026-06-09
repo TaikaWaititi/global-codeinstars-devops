@@ -4,13 +4,13 @@ Backend Java/Spring Boot para gerenciamento e monitoramento de habitats espaciai
 
 ## Equipe
 
-- Arth.pv (ArthurCPV) - RM566515
-- JuliaB (JuliaTButtler) - RM564975
-- Mari (Marixavq) - RM566357
-- Bruno Martins Bettio (TaikaWaititi) - RM564939
-- Jose Diogo Da Silva Neves (ZeDio) - RM562341
-
-> Nesta entrega DevOps, o RM usado nos nomes dos containers e recursos Docker e `RM566515`. Caso outro integrante seja o representante oficial, altere `rm566515` no `docker-compose.yml` antes da gravacao.
+| Integrante | RM |
+| --- | --- |
+| Bruno Martins Bettio | RM564939 |
+| Jose Diogo Da Silva Neves | RM562341 |
+| Arthur dos Santos Cabral | RM566515 |
+| Mariana Xavier Quispe | RM566357 |
+| Julia Tiziotto Buttler | RM564975 |
 
 ## Tecnologias
 
