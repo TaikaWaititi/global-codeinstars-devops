@@ -1,16 +1,18 @@
-# Sistema Helios
+# Sistema Hélios
 
-Backend Java/Spring Boot para gerenciamento e monitoramento de habitats espaciais autonomos. O sistema registra habitats, módulos, ocupantes, sensores, leituras, alertas, ações automáticas, logs e reservas operacionais.
+Backend Java/Spring Boot para gerenciamento e monitoramento de habitats espaciais autônomos. O sistema registra habitats, módulos, ocupantes, sensores, leituras, alertas, ações automáticas, logs e reservas operacionais.
 
 ## Equipe
 
 | Integrante | RM |
 | --- | --- |
 | Bruno Martins Bettio | RM564939 |
-| Jose Diogo Da Silva Neves | RM562341 |
+| José Diogo Da Silva Neves | RM562341 |
 | Arthur dos Santos Cabral | RM566515 |
 | Mariana Xavier Quispe | RM566357 |
 | Julia Tiziotto Buttler | RM564975 |
+
+> Nesta entrega de DevOps, o RM usado nos nomes dos containers e recursos Docker é `RM566515`.
 
 ## Tecnologias
 
@@ -18,70 +20,70 @@ Backend Java/Spring Boot para gerenciamento e monitoramento de habitats espaciai
 - Spring Boot
 - Spring Data JPA
 - PostgreSQL no Docker/Azure
-- H2 como fallback local
+- H2 para execução local sem container
 - Maven
 - Docker e Docker Compose
 - Swagger/OpenAPI
 
-## Arquitetura Macro em Nuvem
+## Arquitetura em Nuvem
 
 ```mermaid
 flowchart LR
-    U["Usuario / Avaliador"] -->|HTTP 8080 pelo IP publico| AZ["Azure Resource Group"]
+    U["Usuário / Avaliador"] -->|HTTP 8080 pelo IP público| AZ["Azure Resource Group"]
     AZ --> NSG["Network Security Group<br/>Portas 22, 8080 e 5432"]
     NSG --> VM["Azure VM Ubuntu<br/>Docker Engine + Compose"]
     VM --> APP["Container App<br/>sistema-helios-app-rm566515<br/>Spring Boot API"]
     APP -->|JDBC na rede Docker| DB["Container Banco<br/>postgres-helios-rm566515<br/>PostgreSQL"]
     DB --> VOL["Volume nomeado<br/>postgres_data_rm566515"]
-    APP --> API["Endpoints REST<br/>habitats, modulos, ocupantes, sensores, leituras, alertas, acoes, logs, reservas"]
+    APP --> API["Endpoints REST<br/>habitats, módulos, ocupantes, sensores, leituras, alertas, ações, logs e reservas"]
 ```
 
 ## Requisitos DevOps Atendidos
 
-- Aplicacao Java conteinerizada com imagem personalizada via `Dockerfile`.
+- Aplicação Java conteinerizada com imagem personalizada via `Dockerfile`.
 - Imagem da aplicação otimizada com runtime Java reduzida via `jlink`, ficando abaixo de 400 MB.
-- Container da aplicação executando com usuário nao privilegiado `helios`.
+- Container da aplicação executando com o usuário não privilegiado `helios`.
 - Diretório de trabalho definido em `/opt/sistema-helios`.
-- Variaveis de ambiente configuradas para app e banco.
-- Portas expostas: app `8080`, banco `5432`.
+- Variáveis de ambiente configuradas para a aplicação e para o banco.
+- Portas expostas: aplicação `8080` e banco `5432`.
 - Containers com nome contendo RM: `sistema-helios-app-rm566515` e `postgres-helios-rm566515`.
 - Banco PostgreSQL com volume nomeado `postgres_data_rm566515`.
-- App e banco na mesma rede Docker `helios-net-rm566515`.
-- CRUDs disponiveis para as entidades principais.
-- Persistencia em tabelas relacionadas, como `modulos_habitacionais -> habitats`, `sensor -> modulos_habitacionais`, `alerta -> sensor/modulo`, `acao_automatica -> alerta` e `reservas -> ocupantes/modulos_habitacionais`.
+- Aplicação e banco na mesma rede Docker: `helios-net-rm566515`.
+- CRUDs disponíveis para as entidades principais.
+- Persistência em tabelas relacionadas, como `modulos_habitacionais -> habitats`, `sensor -> modulos_habitacionais`, `alerta -> sensor/modulo`, `acao_automatica -> alerta` e `reservas -> ocupantes/modulos_habitacionais`.
 
-## Execucao na VM Azure
+## Execução na VM Azure
 
-1. Conecte na VM:
+1. Conecte-se à VM:
 
 ```bash
 ssh azureuser@IP_PUBLICO_DA_VM
 ```
 
-2. Instale Docker na VM, caso ainda nao esteja instalado:
+2. Instale o Docker na VM, caso ainda não esteja instalado:
 
 ```bash
 chmod +x scripts/azure-vm-setup.sh
 ./scripts/azure-vm-setup.sh
 ```
 
-Depois do script, saia e entre novamente via SSH para atualizar o grupo do usuario.
+Depois da instalação, saia da sessão SSH e entre novamente para atualizar o grupo do usuário.
 
-3. Clone o repositorio:
+3. Clone o repositório:
 
 ```bash
 git clone https://github.com/TaikaWaititi/global-codeinstars-devops.git
 cd global-codeinstars-devops
 ```
 
-4. Configure variaveis de ambiente:
+4. Configure as variáveis de ambiente:
 
 ```bash
 cp .env.example .env
 nano .env
 ```
 
-Por padrao, a API publica fica em `8080` e o banco em `5432`. Se outra aplicacao estiver usando essas portas durante um teste local, altere `APP_HOST_PORT` ou `DB_HOST_PORT` no `.env`.
+Por padrão, a API pública fica na porta `8080` e o banco na porta `5432`. Se outra aplicação estiver usando essas portas durante testes locais, altere `APP_HOST_PORT` ou `DB_HOST_PORT` no arquivo `.env`.
 
 5. Suba os containers em segundo plano:
 
@@ -95,24 +97,24 @@ docker compose up -d --build
 docker compose ps
 ```
 
-7. Acesse a aplicacao usando o IP publico da VM:
+7. Acesse a aplicação usando o IP público da VM:
 
 - API: `http://IP_PUBLICO_DA_VM:8080`
 - Swagger: `http://IP_PUBLICO_DA_VM:8080/swagger-ui.html`
 
-As portas `8080` e `5432` precisam estar liberadas no Network Security Group da VM Azure. A porta `5432` deve ser restrita ao IP de quem vai avaliar/gravar quando possivel.
+As portas `8080` e `5432` precisam estar liberadas no Network Security Group da VM Azure. Sempre que possível, a porta `5432` deve ficar restrita ao IP usado na avaliação ou gravação.
 
-Para um passo a passo focado em Azure, consulte [AZURE_DEPLOY.md](AZURE_DEPLOY.md).
+Para um passo a passo específico de Azure, consulte [AZURE_DEPLOY.md](AZURE_DEPLOY.md).
 
-Tambem ha scripts prontos para a VM:
+Scripts disponíveis para a VM:
 
 - `scripts/azure-vm-setup.sh`: instala Docker e Docker Compose.
-- `scripts/azure-deploy.sh`: sobe app e banco com Docker Compose.
-- `scripts/azure-smoke-test.sh`: cria dados via API para demonstracao.
-- `scripts/azure-evidence.sh`: imprime logs, `exec` e `SELECTs` do banco.
-- `azure-nsg-commands.md`: exemplos de regras de NSG pelo Azure CLI.
+- `scripts/azure-deploy.sh`: sobe aplicação e banco com Docker Compose.
+- `scripts/azure-smoke-test.sh`: cria dados via API para demonstração.
+- `scripts/azure-evidence.sh`: exibe logs, comandos `exec` e consultas `SELECT` no banco.
+- `azure-nsg-commands.md`: mostra exemplos de regras de NSG pelo Azure CLI.
 
-## Evidencias Obrigatorias para o Video
+## Evidências para o Vídeo
 
 Mostre os logs dos dois containers:
 
@@ -121,7 +123,7 @@ docker logs sistema-helios-app-rm566515
 docker logs postgres-helios-rm566515
 ```
 
-Mostre diretorio e usuario do app:
+Mostre o diretório e o usuário do container da aplicação:
 
 ```bash
 docker container exec -it sistema-helios-app-rm566515 sh -lc "pwd && ls -la && whoami"
@@ -132,13 +134,13 @@ Resultado esperado:
 - `pwd`: `/opt/sistema-helios`
 - `whoami`: `helios`
 
-Mostre diretorio e usuario do banco:
+Mostre também o diretório e o usuário do container do banco:
 
 ```bash
 docker container exec -it postgres-helios-rm566515 sh -lc "pwd && ls -la && whoami"
 ```
 
-## Teste de CRUD e Persistencia
+## Teste de CRUD e Persistência
 
 Na VM Azure, defina:
 
@@ -146,21 +148,19 @@ Na VM Azure, defina:
 export PUBLIC_IP=IP_PUBLICO_DA_VM
 ```
 
-Crie os dados principais em sequencia:
-
-Opcao rapida para a VM:
+Crie os dados principais em sequência:
 
 ```bash
 chmod +x scripts/*.sh
 ./scripts/azure-smoke-test.sh
 ```
 
-Ou execute manualmente:
+Também é possível executar os testes manualmente:
 
 ```bash
 curl -X POST "http://${PUBLIC_IP}:8080/api/habitats" \
   -H "Content-Type: application/json" \
-  -d '{"nome":"Tundralandia Alpha","localizacao":"Marte","tipoHabitat":"Residencial","capacidadeTotal":50,"statusOperacional":"Ativo"}'
+  -d '{"nome":"Habitat Ares Alpha","localizacao":"Marte","tipoHabitat":"Residencial","capacidadeTotal":50,"statusOperacional":"Ativo"}'
 
 curl -X POST "http://${PUBLIC_IP}:8080/api/ocupantes" \
   -H "Content-Type: application/json" \
@@ -189,15 +189,13 @@ curl "http://${PUBLIC_IP}:8080/api/sensores"
 curl "http://${PUBLIC_IP}:8080/api/reservas"
 ```
 
-Evidencie a persistencia diretamente no banco:
-
-Opcao rapida para gravacao:
+Comprove a persistência diretamente no banco:
 
 ```bash
 ./scripts/azure-evidence.sh
 ```
 
-Ou execute manualmente:
+Também é possível executar as consultas manualmente:
 
 ```bash
 docker container exec -it postgres-helios-rm566515 psql -U helios_user -d helios_db -c "select id, nome, localizacao, status_operacional from habitats;"
@@ -207,7 +205,7 @@ docker container exec -it postgres-helios-rm566515 psql -U helios_user -d helios
 docker container exec -it postgres-helios-rm566515 psql -U helios_user -d helios_db -c "select r.id, o.nome, m.nome_modulo, r.status_reserva from reservas r join ocupantes o on o.id_ocupante = r.id_ocupante join modulos_habitacionais m on m.id = r.id_modulo;"
 ```
 
-## Comandos Uteis
+## Comandos Úteis
 
 Parar os containers:
 
@@ -215,13 +213,13 @@ Parar os containers:
 docker compose down
 ```
 
-Parar e remover tambem o volume do banco:
+Parar os containers e remover o volume do banco:
 
 ```bash
 docker compose down -v
 ```
 
-Rodar testes Java:
+Rodar os testes Java:
 
 ```bash
 ./mvnw test
@@ -232,3 +230,13 @@ No Windows:
 ```powershell
 .\mvnw.cmd test
 ```
+
+## Entrega
+
+A entrega da disciplina deve conter um PDF com:
+
+- Página de rosto com nome da equipe, RM e nome completo dos integrantes.
+- Link público do GitHub com este projeto.
+- Link do vídeo demonstrativo no YouTube.
+
+O vídeo deve demonstrar a execução em nuvem, começando pelo clone do repositório, subindo os containers em background, exibindo logs, acessando os containers com `exec`, executando os CRUDs e comprovando a persistência com `SELECT` conectado diretamente ao container do banco.
