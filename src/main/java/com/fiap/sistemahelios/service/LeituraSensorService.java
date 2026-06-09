@@ -65,6 +65,12 @@ public class LeituraSensorService {
                 .map(LeituraSensorResponseDTO::fromEntity);
     }
 
+    @Transactional(readOnly = true)
+    public Page<LeituraSensorResponseDTO> listarStatusSensores(Pageable pageable) {
+
+        return leituraSensorRepository.findAll(pageable)
+                .map(LeituraSensorResponseDTO::fromEntity);
+    }
 
     @Transactional
     public LeituraSensorResponseDTO atualizar(Long id, LeituraSensorRequestDTO requestDTO) {

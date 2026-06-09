@@ -118,6 +118,34 @@ public class LeituraSensorController {
         return ResponseEntity.ok(leiturasSensor);
     }
 
+
+    // listarStatusSensores
+    @GetMapping("/status")
+    @Operation(
+            summary = "Listar status dos sensores",
+            description = "Retorna informações dos sensores com suas respectivas leituras"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Status dos sensores retornado com sucesso"
+            )
+    })
+    public ResponseEntity<Page<LeituraSensorResponseDTO>> listarStatusSensores(
+
+            @PageableDefault(
+                    size = 10,
+                    sort = "id",
+                    direction = Sort.Direction.ASC
+            ) Pageable pageable
+    ) {
+
+        Page<LeituraSensorResponseDTO> sensores =
+                leituraSensorService.listarStatusSensores(pageable);
+
+        return ResponseEntity.ok(sensores);
+    }
+
     @PutMapping("/{id}")
     @Operation(
             summary = "Atualizar leitura do sensor",

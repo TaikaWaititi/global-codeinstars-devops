@@ -18,6 +18,9 @@ data/
 *.mv.db
 *.trace.db
 
+# Local environment variables
+.env
+
 ### IntelliJ IDEA ###
 .idea
 *.iws

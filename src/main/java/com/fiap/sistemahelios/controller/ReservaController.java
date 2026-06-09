@@ -91,7 +91,7 @@ public class ReservaController {
     }
 
 
-    //http://localhost:8080/api/reservas/ocupante/1
+    //buscarReservasPorOcupante
     @GetMapping("/ocupante/{idOcupante}")
     @Operation(
             summary = "Buscar reservas por ocupante",

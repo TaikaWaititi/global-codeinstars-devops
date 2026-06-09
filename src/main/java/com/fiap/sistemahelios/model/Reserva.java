@@ -24,10 +24,6 @@ public class Reserva {
     )
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_usuario", nullable = false)
-    @NotNull(message = "O ID do usuário é obrigatório")
-    private Usuario usuario;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_ocupante", nullable = false)
@@ -48,7 +44,7 @@ public class Reserva {
     private LocalDate dataInicio;
 
     @NotNull(message = "Data de fim da reserva é obrigatória")
-    @Column(name = "data_cadastro")
+    @Column(name = "data_fim")
     @Schema(
             description = "Data de fim da reserva do usuário",
             example = "2026-05-14"
@@ -67,8 +63,7 @@ public class Reserva {
     public Reserva() {
     }
 
-    public Reserva(Usuario usuario, Ocupante ocupante, ModuloHabitacional modulo, LocalDate dataInicio, LocalDate dataFim, String statusReserva) {
-        this.usuario = usuario;
+    public Reserva(Ocupante ocupante, ModuloHabitacional modulo, LocalDate dataInicio, LocalDate dataFim, String statusReserva) {
         this.ocupante = ocupante;
         this.modulo = modulo;
         this.dataInicio = dataInicio;
@@ -82,14 +77,6 @@ public class Reserva {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
     }
 
     public Ocupante getOcupante() {
@@ -132,4 +119,3 @@ public class Reserva {
         this.statusReserva = statusReserva;
     }
 }
-

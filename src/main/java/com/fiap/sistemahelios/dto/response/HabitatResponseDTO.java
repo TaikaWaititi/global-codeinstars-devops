@@ -12,8 +12,7 @@ public record HabitatResponseDTO(
         String tipoHabitat,
         Integer capacidadeTotal,
         String statusOperacional,
-        LocalDate datacCriacao,
-        String nivelRisco
+        LocalDate datacCriacao
 
 ) {
 
@@ -25,8 +24,7 @@ public record HabitatResponseDTO(
                 habitat.getTipoHabitat(),
                 habitat.getCapacidadeTotal(),
                 habitat.getStatusOperacional(),
-                habitat.getDataCriacao(),
-                habitat.getModulo().getNivelRisco()
+                habitat.getDataCriacao()
         );
     }
 }

@@ -4,7 +4,7 @@ import com.fiap.sistemahelios.model.LeituraSensor;
 
 public record LeituraSensorResponseDTO(
 
-        Long id,
+        Long idSensor,
         String nomeSensor,
         String tipoSensor,
         Double valorLeitura,
@@ -15,13 +15,12 @@ public record LeituraSensorResponseDTO(
 
     public static LeituraSensorResponseDTO fromEntity (LeituraSensor leituraSensor){
         return new LeituraSensorResponseDTO(
-                leituraSensor.getId(),
+                leituraSensor.getSensor().getId(),
                 leituraSensor.getSensor().getNomeSensor(),
                 leituraSensor.getSensor().getTipoSensor(),
                 leituraSensor.getValorLeitura(),
                 leituraSensor.getSensor().getUnidadeMedida(),
                 leituraSensor.getStatusLeitura()
-
         );
     }
 }
