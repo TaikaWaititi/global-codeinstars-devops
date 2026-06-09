@@ -12,8 +12,6 @@ Backend Java/Spring Boot para gerenciamento e monitoramento de habitats espaciai
 | Mariana Xavier Quispe | RM566357 |
 | Julia Tiziotto Buttler | RM564975 |
 
-> Nesta entrega de DevOps, o RM usado nos nomes dos containers e recursos Docker é `RM566515`.
-
 ## Tecnologias
 
 - Java 21
@@ -230,13 +228,3 @@ No Windows:
 ```powershell
 .\mvnw.cmd test
 ```
-
-## Entrega
-
-A entrega da disciplina deve conter um PDF com:
-
-- Página de rosto com nome da equipe, RM e nome completo dos integrantes.
-- Link público do GitHub com este projeto.
-- Link do vídeo demonstrativo no YouTube.
-
-O vídeo deve demonstrar a execução em nuvem, começando pelo clone do repositório, subindo os containers em background, exibindo logs, acessando os containers com `exec`, executando os CRUDs e comprovando a persistência com `SELECT` conectado diretamente ao container do banco.
