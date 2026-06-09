@@ -39,6 +39,7 @@ flowchart LR
 ## Requisitos DevOps Atendidos
 
 - Aplicacao Java conteinerizada com imagem personalizada via `Dockerfile`.
+- Imagem da aplicacao otimizada com runtime Java reduzida via `jlink`, ficando abaixo de 400 MB.
 - Container da aplicacao executando com usuario nao privilegiado `helios`.
 - Diretorio de trabalho definido em `/opt/sistema-helios`.
 - Variaveis de ambiente configuradas para app e banco.
